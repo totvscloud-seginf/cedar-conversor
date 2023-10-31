@@ -183,5 +183,3 @@ Some ways to contribute are:
 * Document usage and limitations
 * Enhance the library with additional functionality you need
 * Add test cases, particularly those from [`cedar-integration-tests`](https://github.com/totvscloud-seginf/cedarpy-conversor/issues/3)
-
-You can reach people interested in this project in the `#cedar-py` channel of the [Cedar Policy Slack workspace](https://communityinviter.com/apps/cedar-policy/cedar-policy-language).
