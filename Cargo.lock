@@ -139,7 +139,7 @@ dependencies = [
 
 [[package]]
 name = "cedarpy_conversor"
-version = "0.4.0"
+version = "0.0.1"
 dependencies = [
  "cedar-policy",
  "pyo3",
