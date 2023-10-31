@@ -170,7 +170,7 @@ The release process will build a wheel and output it into `target/wheels/`
 
 Now you can install that file with pip, e.g.:
 ```shell
-pip install --force-reinstall /path/to/cedar-py/target/wheels/cedarpy_*.whl
+pip install --force-reinstall /path/to/cedarpy-conversor/target/wheels/cedarpy_*.whl
 ```
 
 
