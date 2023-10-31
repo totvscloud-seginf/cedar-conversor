@@ -34,6 +34,7 @@ jobs:
             body: "CedarPy Conversor"
             generateReleaseNotes: true
             tag: "v${{ needs.versioning.outputs.version }}"
-            prerelease: true
+            commit: "main"
+            
 
               
