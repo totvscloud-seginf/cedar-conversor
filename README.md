@@ -29,7 +29,8 @@ pip install cedarpy-conversor
 ### Convert cedar policies to JSON representation
 Now you can use the library to convert cedar policies to JSON representation:
 ```python
-from cedarpy_conversor import convert_json_to_cedar_policies
+import json
+from cedarpy_conversor import convert_cedar_policies_to_json
 
 policies: str = """
     permit(
@@ -40,47 +41,128 @@ policies: str = """
         (context["tls_version"]) == "1.3"
     };
 """
+json_representation = json.loads(convert_cedar_policies_to_json(policies))
+json_representation: str = json.dumps(json_representation, indent=2)
 
-json_representation: str = convert_cedar_policies_to_json(policies)
-
-# so you can assert that the json representation is correct
-assert json_representation == """
+expected_json_representation: str = """
 {
-    "effect": "permit",
-    "principal": {
-        "op": "==",
-        "entity": { "type": "User", "id": "12UA45" }
-    },
-    "action": {
-        "op": "==",
-        "entity": { "type": "Action", "id": "view" }
-    },
-    "resource": {
-        "op": "in",
-        "entity": { "type": "Folder", "id": "abc" }
-    },
-    "conditions": [
-        {
-            "kind": "when",
-            "body": {
-                "==": {
-                    "left": {
-                        ".": {
-                            "left": {
-                                "Var": "context"
-                            },
-                            "attr": "tls_version"
-                        }
-                    },
-                    "right": {
-                        "Value": "1.3"
-                    }
-                }
+  "effect": "permit",
+  "principal": {
+    "op": "==",
+    "entity": {
+      "type": "User",
+      "id": "12UA45"
+    }
+  },
+  "action": {
+    "op": "==",
+    "entity": {
+      "type": "Action",
+      "id": "view"
+    }
+  },
+  "resource": {
+    "op": "in",
+    "entity": {
+      "type": "Folder",
+      "id": "abc"
+    }
+  },
+  "conditions": [
+    {
+      "kind": "when",
+      "body": {
+        "==": {
+          "left": {
+            ".": {
+              "left": {
+                "Var": "context"
+              },
+              "attr": "tls_version"
             }
+          },
+          "right": {
+            "Value": "1.3"
+          }
         }
-    ]
+      }
+    }
+  ]
 }
 """
+
+# so you can assert that the json representation is correct
+assert json_representation.strip() == expected_json_representation.strip()
+```
+
+### Convert JSON representation to cedar policies
+You can also use the library to convert JSON representation to cedar policies:
+```python
+import json
+from cedarpy_conversor import convert_json_to_cedar_policies
+
+expected_policies: str = """
+permit(
+  principal == User::"12UA45",
+  action == Action::"view",
+  resource in Folder::"abc"
+) when {
+  (context["tls_version"]) == "1.3"
+};
+"""
+
+
+json_representation: str = """
+{
+  "effect": "permit",
+  "principal": {
+    "op": "==",
+    "entity": {
+      "type": "User",
+      "id": "12UA45"
+    }
+  },
+  "action": {
+    "op": "==",
+    "entity": {
+      "type": "Action",
+      "id": "view"
+    }
+  },
+  "resource": {
+    "op": "in",
+    "entity": {
+      "type": "Folder",
+      "id": "abc"
+    }
+  },
+  "conditions": [
+    {
+      "kind": "when",
+      "body": {
+        "==": {
+          "left": {
+            ".": {
+              "left": {
+                "Var": "context"
+              },
+              "attr": "tls_version"
+            }
+          },
+          "right": {
+            "Value": "1.3"
+          }
+        }
+      }
+    }
+  ]
+}
+"""
+
+policies: str = convert_json_to_cedar_policies(json_representation)
+
+# so you can assert that the json representation is correct
+assert policies.strip() == expected_policies.strip()
 ```
 
 ## Developing
@@ -124,20 +206,20 @@ The `make quick` command will build the Rust source code with `maturin` and run 
 
 If all goes well, you should see output like:
 ```shell
-(venv-dev) swedish-chef:cedar-py skuenzli$ make quick
+(venv-dev) totvs:cedarpy-conversor totvs$ make quick
 Performing quick build
 set -e ;\
 	maturin develop ;\
 	pytest
 📦 Including license file "/path/to/cedarpy-conversor/LICENSE"
 🔗 Found pyo3 bindings
-🐍 Found CPython 3.9 at /path/to/cedar-py/venv-dev/bin/python
+🐍 Found CPython 3.9 at /path/to/cedarpy-conversor/venv-dev/bin/python
 📡 Using build options features from pyproject.toml
 Ignoring maturin: markers 'extra == "dev"' don't match your environment
 Ignoring pip-tools: markers 'extra == "dev"' don't match your environment
 Ignoring pytest: markers 'extra == "dev"' don't match your environment
 💻 Using `MACOSX_DEPLOYMENT_TARGET=11.0` for aarch64-apple-darwin by default
-   Compiling cedarpy v0.1.0 (/path/to/cedar-py)
+   Compiling cedarpy_conversor v0.1.0 (/path/to/cedarpy-conversor)
     Finished dev [unoptimized + debuginfo] target(s) in 3.06s
 📦 Built wheel for CPython 3.9 to /var/folders/k2/tnw8n1c54tv8nt4557pfx3440000gp/T/.tmpO6aj6c/cedarpy-0.1.0-cp39-cp39-macosx_11_0_arm64.whl
 🛠 Installed cedarpy-0.1.0
@@ -182,4 +264,3 @@ Some ways to contribute are:
 * Use the project and report experience and issues
 * Document usage and limitations
 * Enhance the library with additional functionality you need
-* Add test cases, particularly those from [`cedar-integration-tests`](https://github.com/totvscloud-seginf/cedarpy-conversor/issues/3)
