@@ -2,9 +2,9 @@ import unittest
 
 from textwrap import dedent
 
-from cedarpy_conversor import convert_policies_from_json
+from cedarpy_conversor import convert_json_to_cedar_policies
 
-class ConvertPolicyTestCase(unittest.TestCase):
+class ConvertJsonToPolicyTestCase(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
 
@@ -57,10 +57,6 @@ class ConvertPolicyTestCase(unittest.TestCase):
             };
         """).strip()
 
-        actual_result = convert_policies_from_json(input_policy)
-        
-        print(f"actual_result: {actual_result}")
-        
-        print(f"expect_result: {expect_result}")
+        actual_result = convert_json_to_cedar_policies(input_policy)
 
         self.assertEqual(expect_result, actual_result)
