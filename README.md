@@ -232,7 +232,7 @@ collected 4 items
 
 tests/unit/test_convert_json_to_policy.py::ConvertJsonToPolicyTestCase::test_policy_json_to_cedar PASSED                                                                               [ 25%]
 tests/unit/test_convert_policy_to_json.py::ConvertPolicyToJsonTestCase::test_policy_json_to_cedar PASSED                                                                               [ 50%] 
-tests/unit/test_import_module.py::ImportModuleTestCase::test_cedarpy_module_imports PASSED                                                                                             [ 75%] 
+tests/unit/test_import_module.py::ImportModuleTestCase::test_cedarpy_conversor_module_imports PASSED                                                                                             [ 75%] 
 tests/unit/test_import_module.py::InvokeModuleTestFunctionTestCase::test_invoke_echo PASSED                                                                                            [100%] 
 
 ================================================================================================ 4 passed in 0.32s =================================================================================================
