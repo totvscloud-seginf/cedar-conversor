@@ -8,7 +8,7 @@ class ConvertPolicyToJsonTestCase(unittest.TestCase):
     def setUp(self) -> None:
         super().setUp()
 
-    def test_policy_json_to_cedar(self):
+    def test_cedar_policy_to_json(self):
         input_policy = dedent("""
             permit(
               principal == User::"12UA45",
